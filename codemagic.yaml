@@ -1,7 +1,16 @@
 workflows:
   simple-workflow:
-    name: Native Android
+    name: BookExplorer
     max_build_duration: 60
+    triggering:
+      events:
+        - push
+        - tag
+        - pull_request
+      branch_patterns:
+        - pattern: '*'
+          include: true
+          source: true
     scripts:
       - name: Run tests
         script: ./gradlew test
