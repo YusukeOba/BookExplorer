@@ -1,6 +1,6 @@
 workflows:
   simple-workflow:
-    name: Native Android
+    name: book-explorer
     max_build_duration: 60
     scripts:
       - name: Run tests
