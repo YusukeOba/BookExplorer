@@ -1,5 +1,9 @@
 package tokyo.oversoftware.bookexplorer.entity
 
+/**
+ * Google Books APIで返却されるモデルを定義する
+ * ここで定義したデータを元にMoshiがRAW JSON <-> Class へ変換を行う
+ */
 data class Books(
     val kind: String,
     val totalItems: Int,
@@ -37,7 +41,6 @@ data class VolumeInfo(
     val imageLinks: ImageLinks?,
     val language: String?,
     val previewLink: String?,
-    val infoLink: String?,
     val canonicalVolumeLink: String?,
 )
 
