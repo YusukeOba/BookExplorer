@@ -41,7 +41,7 @@ class RepositoryTest {
     fun `Validate success Empty Response`() {
         val repository = GoogleBooksRepository(remoteDataSource = EmptyDataSource())
         val result = repository.findBooks(searchKeyword = "").blockingGet()
-        Assert.assertEquals(result.items.size, 0)
+        Assert.assertEquals(result.items?.size, 0)
     }
 
     @Test
@@ -50,11 +50,11 @@ class RepositoryTest {
         val resultA = repository.findBooks(searchKeyword = "YusukeOba").blockingGet()
         val resultB = repository.findBooks(searchKeyword = "YusukeOba").blockingGet()
         val resultC = repository.findBooks(searchKeyword = "C").blockingGet()
-        Assert.assertEquals(resultA.items[0].volumeInfo?.title, "ExampleBook")
+        Assert.assertEquals(resultA.items?.get(0)?.volumeInfo?.title, "ExampleBook")
         // １，２回目のデータはキーワードが同じなのでレスポンスも同じか
-        Assert.assertEquals(resultB.items[0].volumeInfo?.title, "ExampleBook")
+        Assert.assertEquals(resultB.items?.get(0)?.volumeInfo?.title, "ExampleBook")
         // ３回目のデータはキーワードが違うのでレスポンスは空か
-        Assert.assertEquals(resultC.items.size, 0)
+        Assert.assertEquals(resultC.items?.size, 0)
     }
 
     @Test

@@ -41,7 +41,7 @@ class GoogleBooksRepository(private val remoteDataSource: BooksRemoteDataSource)
         return remoteDataSource.fetchBooks(searchKeyword = searchKeyword)
             .doOnSuccess {
                 // 初回か別のキーワードであればメモリに入れておく
-                val differentSearchWord: Boolean = searchKeyword == cache?.first
+                val differentSearchWord: Boolean = searchKeyword != cache?.first
                 if (cache == null || differentSearchWord) {
                     cache = Pair(searchKeyword, it)
                 }

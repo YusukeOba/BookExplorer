@@ -19,18 +19,6 @@ class DisplayableBook(private val book: Book) {
 
     // リンク
     fun link(): String {
-        // ISBNコードがあるか
-        val isbn10 = book.volumeInfo?.industryIdentifiers?.find { it.type == "ISBN_10" }?.identifier
-        if (isbn10 != null) {
-            return "https://www.amazon.co.jp/dp/isbn10"
-        }
-
-        return if (book.volumeInfo?.industryIdentifiers?.size == 0) {
-            // 出版社がない場合はタイトルで検索する
-            "https://www.google.com/search?q=" + book.volumeInfo.title
-        } else {
-            // ISBNコードがない場合は検索する
-            "https://www.google.com/search?q=" + book.volumeInfo?.industryIdentifiers?.get(0)?.identifier
-        }
+        return book.volumeInfo?.previewLink ?: ""
     }
 }

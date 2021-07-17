@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">BookExplorer</string>
+    <string name="activity_search_edit">本のタイトルで検索</string>
+    <string name="dummy_text">dummyText</string>
+    <string name="text_error">通信エラーが発生しました</string>
+    <string name="initial_word">ハリー・ポッター</string>
+
+    <string name="dialog_title">Book Explorer へようこそ！</string>
+    <string name="dialog_message">このアプリは設計にMVVM + Repositoryパターンを利用した書籍の検索アプリです。\n上部の検索バーから本の名前を入力してみましょう！</string>
 </resources>
