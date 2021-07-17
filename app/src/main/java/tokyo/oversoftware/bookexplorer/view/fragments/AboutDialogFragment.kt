@@ -2,6 +2,7 @@ package tokyo.oversoftware.bookexplorer.view.fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import tokyo.oversoftware.bookexplorer.R
@@ -30,5 +31,10 @@ class AboutDialogFragment : DialogFragment() {
                 (activity as Callbacks).onDismissAboutDialog()
             }
             .create()
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        (activity as Callbacks).onDismissAboutDialog()
     }
 }
