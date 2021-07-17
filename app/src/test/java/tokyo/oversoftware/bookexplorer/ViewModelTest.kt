@@ -25,7 +25,7 @@ class TestObserver<T>(count: Int = 1) : Observer<T> {
 
     private val latch: CountDownLatch = CountDownLatch(count)
 
-    val values = mutableListOf<T?>()
+    private val values = mutableListOf<T?>()
 
     override fun onChanged(t: T?) {
         values.add(t)

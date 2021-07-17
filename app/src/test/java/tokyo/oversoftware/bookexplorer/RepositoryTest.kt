@@ -28,11 +28,11 @@ class RepositoryTest {
 
         override fun fetchBooks(searchKeyword: String): Single<Books> {
             // ２回目以降は空のレスポンスを返すことでキャッシュロジックが有効かを評価する
-            if (count == 0) {
+            return if (count == 0) {
                 count += 1
-                return Single.just(Constants.mockBook)
+                Single.just(Constants.mockBook)
             } else {
-                return Single.just(Books(kind = "", totalItems = 0, items = emptyList()))
+                Single.just(Books(kind = "", totalItems = 0, items = emptyList()))
             }
         }
     }
@@ -61,11 +61,10 @@ class RepositoryTest {
     fun `Validate Invalid Response`() {
         val repository = GoogleBooksRepository(remoteDataSource = InvalidDataSource())
         var throwable: Throwable? = null
-        val result =
-            repository.findBooks(searchKeyword = "")
-                .blockingSubscribeBy(onError = {
-                    throwable = it
-                })
+        repository.findBooks(searchKeyword = "")
+            .blockingSubscribeBy(onError = {
+                throwable = it
+            })
         Assert.assertEquals(throwable?.message, "Invalid Response")
     }
 }

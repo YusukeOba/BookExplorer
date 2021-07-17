@@ -108,10 +108,9 @@ class DataSourceTest {
         val dataSource =
             GoogleBooksDataSource(apiService = InvalidRetrofitResponse(delegate = buildRetrofit()))
         var throwable: Throwable? = null
-        val result =
-            dataSource.fetchBooks(searchKeyword = "EXAMPLE").blockingSubscribeBy(onError = {
-                throwable = it
-            })
+        dataSource.fetchBooks(searchKeyword = "EXAMPLE").blockingSubscribeBy(onError = {
+            throwable = it
+        })
 
         Assert.assertEquals(throwable?.message, "Invalid Response")
     }

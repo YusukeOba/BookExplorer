@@ -4,7 +4,7 @@
 
 ## スクリーンショット
 
-| ![image](file:///Users/over/AndroidStudioProjects2/BookExplorer/document/1.jpg?lastModify=1626529140) | ![image](./document/2.jpg) |
+| ![image](./document/1.jpg) | ![image](./document/2.jpg) |
 | ------------------------------------------------------------ | -------------------------- |
 
 

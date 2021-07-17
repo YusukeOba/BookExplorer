@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.jakewharton.rxbinding4.view.clicks
 import tokyo.oversoftware.bookexplorer.R
 import tokyo.oversoftware.bookexplorer.databinding.ItemBookBinding
 import tokyo.oversoftware.bookexplorer.entity.DisplayableBook
@@ -37,7 +36,7 @@ class BooksAdapter(private var books: List<DisplayableBook>) :
             binding.root.setOnClickListener {
                 val uri = Uri.parse(book.link())
                 val intent = Intent(Intent.ACTION_VIEW, uri)
-                binding.root.context.startActivity(intent);
+                binding.root.context.startActivity(intent)
             }
         }
     }
