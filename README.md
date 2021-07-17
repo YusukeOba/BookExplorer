@@ -22,6 +22,7 @@
 ## 設計について
 
 #3 を参照してください
+* https://github.com/YusukeOba/BookExplorer/issues/3
 
 ## ビルド方法
 
