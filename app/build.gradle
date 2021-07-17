@@ -30,6 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -55,7 +59,11 @@ dependencies {
 
     // retrofit2, moshi
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation("com.squareup.retrofit2:retrofit-mock:2.9.0")
     implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
