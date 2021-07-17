@@ -33,7 +33,7 @@ object Constants {
                     pageCount = 120,
                     printType = "Paper",
                     categories = emptyList(),
-                    averageRating = 5,
+                    averageRating = 5.0,
                     ratingsCount = 100,
                     maturityRating = null,
                     allowAnonLogging = null,

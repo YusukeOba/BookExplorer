@@ -26,13 +26,6 @@ object DependencyInjection {
     )
 
     /**
-     * 書籍取得用Repositoryの取得
-     */
-    fun remoteRepository(): BooksRepository {
-        return remoteRepository
-    }
-
-    /**
      * 検索用ViewModelの取得
      */
     fun searchViewModelFactory(): ViewModelProvider.Factory {

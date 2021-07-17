@@ -86,7 +86,7 @@ class DataSourceTest {
         val dataSource =
             GoogleBooksDataSource(apiService = EmptyRetrofitResponse(delegate = buildRetrofit()))
         val result = dataSource.fetchBooks(searchKeyword = "EXAMPLE").blockingGet()
-        Assert.assertEquals(result.items.size, 0)
+        Assert.assertEquals(result.items?.size, 0)
     }
 
     @Test
@@ -94,11 +94,11 @@ class DataSourceTest {
         val dataSource =
             GoogleBooksDataSource(apiService = NormalRetrofitResponse(delegate = buildRetrofit()))
         val result = dataSource.fetchBooks(searchKeyword = "EXAMPLE").blockingGet()
-        Assert.assertEquals(result.items.size, 1)
-        Assert.assertEquals(result.items[0].volumeInfo?.title, "ExampleBook")
-        Assert.assertEquals(result.items[0].volumeInfo?.authors?.get(0), "YusukeOba")
+        Assert.assertEquals(result.items?.size, 1)
+        Assert.assertEquals(result.items?.get(0)?.volumeInfo?.title, "ExampleBook")
+        Assert.assertEquals(result.items?.get(0)?.volumeInfo?.authors?.get(0), "YusukeOba")
         Assert.assertEquals(
-            result.items[0].volumeInfo?.imageLinks?.thumbnail,
+            result.items?.get(0)?.volumeInfo?.imageLinks?.thumbnail,
             "https://picsum.photos/536/354"
         )
     }
@@ -108,10 +108,9 @@ class DataSourceTest {
         val dataSource =
             GoogleBooksDataSource(apiService = InvalidRetrofitResponse(delegate = buildRetrofit()))
         var throwable: Throwable? = null
-        val result =
-            dataSource.fetchBooks(searchKeyword = "EXAMPLE").blockingSubscribeBy(onError = {
-                throwable = it
-            })
+        dataSource.fetchBooks(searchKeyword = "EXAMPLE").blockingSubscribeBy(onError = {
+            throwable = it
+        })
 
         Assert.assertEquals(throwable?.message, "Invalid Response")
     }

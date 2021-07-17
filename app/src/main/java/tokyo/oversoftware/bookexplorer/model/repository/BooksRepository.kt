@@ -1,6 +1,5 @@
 package tokyo.oversoftware.bookexplorer.model.repository
 
-import android.util.Log
 import io.reactivex.rxjava3.core.Single
 import tokyo.oversoftware.bookexplorer.entity.Books
 import tokyo.oversoftware.bookexplorer.model.datastore.remote.BooksRemoteDataSource
@@ -26,7 +25,7 @@ class GoogleBooksRepository(private val remoteDataSource: BooksRemoteDataSource)
 
     // キャッシュデータ
     // 検索ワードと書籍データのペア。画面回転時のキャッシュに利用する
-    var cache: Pair<String, Books>? = null
+    private var cache: Pair<String, Books>? = null
 
     /**
      * 書籍情報を取得する
@@ -41,7 +40,7 @@ class GoogleBooksRepository(private val remoteDataSource: BooksRemoteDataSource)
         return remoteDataSource.fetchBooks(searchKeyword = searchKeyword)
             .doOnSuccess {
                 // 初回か別のキーワードであればメモリに入れておく
-                val differentSearchWord: Boolean = searchKeyword == cache?.first
+                val differentSearchWord: Boolean = searchKeyword != cache?.first
                 if (cache == null || differentSearchWord) {
                     cache = Pair(searchKeyword, it)
                 }

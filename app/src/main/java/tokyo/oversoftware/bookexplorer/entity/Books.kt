@@ -7,7 +7,7 @@ package tokyo.oversoftware.bookexplorer.entity
 data class Books(
     val kind: String,
     val totalItems: Int,
-    val items: List<Book>
+    val items: List<Book>?
 )
 
 data class Book(
@@ -23,7 +23,7 @@ data class Book(
 data class VolumeInfo(
     val title: String?,
     val subtitle: String?,
-    val authors: List<String>,
+    val authors: List<String>?,
     val publisher: String?,
     val publishedDate: String?,
     val description: String?,
@@ -32,7 +32,7 @@ data class VolumeInfo(
     val pageCount: Int?,
     val printType: String?,
     val categories: List<String>?,
-    val averageRating: Int?,
+    val averageRating: Double?,
     val ratingsCount: Int?,
     val maturityRating: String?,
     val allowAnonLogging: Boolean?,
@@ -85,9 +85,9 @@ data class AccessInfo(
 )
 
 data class Availability(
-    val isAvailable: Boolean
+    val isAvailable: Boolean?
 )
 
 data class SearchInfo(
-    val textSnippet: String
+    val textSnippet: String?
 )

@@ -8,7 +8,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
 import tokyo.oversoftware.bookexplorer.entity.DisplayableBook
 import tokyo.oversoftware.bookexplorer.model.repository.BooksRepository
 import java.util.concurrent.TimeUnit
@@ -33,44 +32,60 @@ class SearchViewModel(private val repository: BooksRepository) : ViewModel() {
     // List表示用のデータ
     val items: LiveData<List<DisplayableBook>> = _items
 
-    private val _isLoading = MutableLiveData<Boolean>()
+    private val _isLoading = MutableLiveData<Boolean>(true)
 
     // 読み込み中フラグ
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _onError = MutableLiveData<Unit>()
+    private val _onError = MutableLiveData<Boolean>(false)
 
     // エラー表示
-    val onError: LiveData<Unit> = _onError
+    val onError: LiveData<Boolean> = _onError
 
-    private val _isEmpty = MutableLiveData<Boolean>()
+    private var _aboutDialogDismissed: Boolean = false
 
-    // リストにデータがない場合
-    val isEmpty: LiveData<Boolean> = _isEmpty
+    // ダイアログを閉じたか
+    val aboutDialogDismissed get() = _aboutDialogDismissed
 
     /**
      * 書籍の検索を行う
      *
      * @param keyword
      */
-    fun onSearch(keyword: String) {
-        Observable.just(keyword) // TODO: RxBindingでEditTextのHotなStreamを利用する
-            .subscribeOn(Schedulers.io())
-            // 重複した文字は検索品い
+    fun onSearch(searchKeyword: Observable<CharSequence>) {
+        // TODO: 今回は時間がないのでやめておくが、onErrorになるとStreamが途切れてしまうので、
+        //  Tuple<Books, Throwable>のような形でRepositoryが返したほうが良いかも
+        searchKeyword
+            .map { it.toString() }
             .distinctUntilChanged()
-            // 入力されて500msec経過したTextを検索する
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
+            .filter { it.isNotEmpty() }
+            // 入力されて700msec経過したTextを検索する
+            .debounce(700, TimeUnit.MILLISECONDS)
+            .doOnNext {
+                _onError.postValue(false)
+                _items.postValue(emptyList())
+                _isLoading.postValue(true)
+            }
             // 最新のデータのみ処理してその他は破棄
             .switchMapSingle {
-                repository.findBooks(it)
+                repository.findBooks(it.toString())
             }
-            .subscribe({ books ->
-                _items.postValue(books.items.map { book -> DisplayableBook(book = book) })
-                _isEmpty.postValue(books.items.isEmpty())
-                _isLoading.postValue(_isLoading.value)
-            }, {
-            })
+            .subscribe(
+                { books ->
+                    _items.postValue(books.items?.map { book -> DisplayableBook(book = book) })
+                    _isLoading.postValue(false)
+                },
+                {
+                    _isLoading.postValue(false)
+                    _onError.postValue(true)
+                }
+            )
             .addTo(compositeDisposable)
+    }
+
+    fun dismissAboutDialog() {
+        _aboutDialogDismissed = true
     }
 
     override fun onCleared() {

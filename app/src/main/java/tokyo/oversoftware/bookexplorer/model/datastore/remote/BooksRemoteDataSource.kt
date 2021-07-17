@@ -1,7 +1,5 @@
 package tokyo.oversoftware.bookexplorer.model.datastore.remote
 
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import tokyo.oversoftware.bookexplorer.entity.Books
 

@@ -28,11 +28,11 @@ class RepositoryTest {
 
         override fun fetchBooks(searchKeyword: String): Single<Books> {
             // ２回目以降は空のレスポンスを返すことでキャッシュロジックが有効かを評価する
-            if (count == 0) {
+            return if (count == 0) {
                 count += 1
-                return Single.just(Constants.mockBook)
+                Single.just(Constants.mockBook)
             } else {
-                return Single.just(Books(kind = "", totalItems = 0, items = emptyList()))
+                Single.just(Books(kind = "", totalItems = 0, items = emptyList()))
             }
         }
     }
@@ -41,7 +41,7 @@ class RepositoryTest {
     fun `Validate success Empty Response`() {
         val repository = GoogleBooksRepository(remoteDataSource = EmptyDataSource())
         val result = repository.findBooks(searchKeyword = "").blockingGet()
-        Assert.assertEquals(result.items.size, 0)
+        Assert.assertEquals(result.items?.size, 0)
     }
 
     @Test
@@ -50,22 +50,21 @@ class RepositoryTest {
         val resultA = repository.findBooks(searchKeyword = "YusukeOba").blockingGet()
         val resultB = repository.findBooks(searchKeyword = "YusukeOba").blockingGet()
         val resultC = repository.findBooks(searchKeyword = "C").blockingGet()
-        Assert.assertEquals(resultA.items[0].volumeInfo?.title, "ExampleBook")
+        Assert.assertEquals(resultA.items?.get(0)?.volumeInfo?.title, "ExampleBook")
         // １，２回目のデータはキーワードが同じなのでレスポンスも同じか
-        Assert.assertEquals(resultB.items[0].volumeInfo?.title, "ExampleBook")
+        Assert.assertEquals(resultB.items?.get(0)?.volumeInfo?.title, "ExampleBook")
         // ３回目のデータはキーワードが違うのでレスポンスは空か
-        Assert.assertEquals(resultC.items.size, 0)
+        Assert.assertEquals(resultC.items?.size, 0)
     }
 
     @Test
     fun `Validate Invalid Response`() {
         val repository = GoogleBooksRepository(remoteDataSource = InvalidDataSource())
         var throwable: Throwable? = null
-        val result =
-            repository.findBooks(searchKeyword = "")
-                .blockingSubscribeBy(onError = {
-                    throwable = it
-                })
+        repository.findBooks(searchKeyword = "")
+            .blockingSubscribeBy(onError = {
+                throwable = it
+            })
         Assert.assertEquals(throwable?.message, "Invalid Response")
     }
 }
